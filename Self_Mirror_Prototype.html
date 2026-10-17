@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Self Mirror</title>
+<style>
+:root{--bg:#06111f;--panel:#0e2033;--cyan:#41e7ff;--muted:#a8bfd0}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#102d46 0,#06111f 55%);color:#eefaff;font-family:system-ui,-apple-system,Arial,sans-serif;min-height:100vh}
+header{padding:26px 20px 16px;text-align:center}
+.orb{width:72px;height:72px;border-radius:50%;margin:0 auto 12px;background:radial-gradient(circle at 35% 30%,#d8ffff,#41e7ff 25%,#116a9a 60%,#081c30 75%);box-shadow:0 0 28px #27dfff88, inset 0 0 12px #fff}
+h1{font-size:25px;letter-spacing:4px;color:var(--cyan);margin:6px 0}
+.sub{font-size:13px;color:var(--muted)}
+main{max-width:520px;margin:auto;padding:10px 16px 30px}
+.card{background:#0d1e30dd;border:1px solid #1b5369;border-radius:18px;padding:17px;margin:12px 0;box-shadow:0 8px 30px #0003}
+h2{font-size:17px;margin:0 0 10px}
+p{line-height:1.5}
+.pill{display:inline-block;border:1px solid #24667c;color:var(--cyan);border-radius:99px;padding:6px 10px;font-size:12px;margin:3px}
+textarea,input{width:100%;background:#06111f;color:#fff;border:1px solid #2a6379;border-radius:12px;padding:12px;font:inherit;outline:none}
+button{background:var(--cyan);color:#04131d;border:0;border-radius:12px;padding:12px 14px;font-weight:700;font-size:15px;cursor:pointer}
+.row{display:flex;gap:8px;margin-top:10px}.row button{flex:1}
+#messages{min-height:52px;max-height:220px;overflow:auto;color:#d8edf7;font-size:14px}
+.msg{padding:9px 11px;background:#122d43;border-radius:12px;margin:7px 0;overflow-wrap:anywhere}
+.note{font-size:12px;color:var(--muted)}
+footer{text-align:center;padding:8px 20px 26px;color:#7898ac;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="orb"></div>
+  <h1>SELF MIRROR</h1>
+  <div class="sub">YOUR PERSONAL ASSISTANT • প্রাথমিক ডিজাইন</div>
+</header>
+<main>
+  <section class="card">
+    <span class="pill">SYSTEM ONLINE • DEMO</span>
+    <h2 style="margin-top:12px">হ্যালো! আমি Mirror 👋</h2>
+    <p>তোমার নিজের AI সহকারীর প্রথম ডিজাইন প্রস্তুত। এখানে বাংলা বা ইংরেজিতে মেসেজ লিখে ইন্টারফেস পরীক্ষা করতে পারো।</p>
+    <div class="note">মনে রেখো: এখনো আসল AI যুক্ত হয়নি।</div>
+  </section>
+  <section class="card">
+    <h2>💬 Mirror-এর সঙ্গে কথা বলো</h2>
+    <div id="messages" aria-live="polite"><div class="msg">Mirror: হ্যালো! তোমার মেসেজ নিচে লেখো।</div></div>
+    <textarea id="prompt" rows="2" placeholder="এখানে বাংলা বা English-এ লেখো..."></textarea>
+    <div class="row">
+      <button onclick="sendMessage()">মেসেজ পাঠাও</button>
+      <button onclick="clearChat()" style="background:#17374d;color:#dffaff;border:1px solid #28647b">চ্যাট মুছো</button>
+    </div>
+  </section>
+  <section class="card">
+    <h2>📁 ফাইল বেছে নাও</h2>
+    <input type="file" id="filePicker">
+    <p id="fileName" class="note">ফাইল বাছাই করা হয়নি। এই ডেমো ফাইল সংরক্ষণ করে না।</p>
+  </section>
+  <section class="card">
+    <h2>🔐 নিরাপত্তা</h2>
+    <p class="note">পরের ধাপে আসল অ্যাপের নিরাপদ লক যোগ করার পরিকল্পনা আছে। এই ডেমোতে কোনো পাসকোড সেট করো না এবং ব্যক্তিগত ফাইল ব্যবহার কোরো না।</p>
+  </section>
+</main>
+<footer>SELF MIRROR • Prototype 1 • শুধু ইন্টারফেস ডেমো</footer>
+<script>
+function sendMessage(){
+ const input=document.getElementById('prompt');
+ const value=input.value.trim();
+ if(!value){input.focus();return;}
+ const messages=document.getElementById('messages');
+ const user=document.createElement('div');user.className='msg';user.textContent='তুমি: '+value;messages.appendChild(user);
+ const reply=document.createElement('div');reply.className='msg';reply.textContent='Mirror: মেসেজ পেয়েছি! আসল AI সংযোগ পরের ধাপে যোগ করতে হবে।';messages.appendChild(reply);
+ input.value='';messages.scrollTop=messages.scrollHeight;
+}
+function clearChat(){document.getElementById('messages').innerHTML='';}
+document.getElementById('filePicker').addEventListener('change',function(){
+ document.getElementById('fileName').textContent=this.files.length?'নির্বাচিত ফাইল: '+this.files[0].name:'ফাইল বাছাই করা হয়নি।';
+});
+document.getElementById('prompt').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
+</script>
+</body>
+</html>
